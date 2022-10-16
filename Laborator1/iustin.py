@@ -1,5 +1,8 @@
 from collections import defaultdict
 
+'''
+aici ai putea direct sa folosesti .split() si sa vezi len() de ce returneaza, dar e ok si asa
+'''
 def word_count(text): #ex 10
     words = 1
     for i in text:
@@ -7,7 +10,9 @@ def word_count(text): #ex 10
             words += 1
     return words
 
-
+'''
+aici ar trebui totusi sa citesti de la tastatura, asa zice enuntul, in rest ar fi in regula
+'''
 def find_gcd(arr):   # ex 1
     if len(arr) <= 1:
         return arr
@@ -38,7 +43,9 @@ def count_substrings(string, substring):  # ex3
             count += 1
     return count
 
-
+'''
+aici uiti sa convertesti in lower case..
+'''
 def upper_camel_case(text):  #ex 4
     result = []
     for index in range(len(text)):
@@ -49,8 +56,6 @@ def upper_camel_case(text):  #ex 4
         else:
             result.append(text[index])
     return "".join(result)
-
-
 
 
 def is_palindrome(number):  #ex 6
@@ -78,6 +83,9 @@ def find_first_number(text):        # ex 7
 
     return result
 
+'''
+ar fi mers si direct bin(number).count('1')
+'''
 def count_bits(number): #ex 8 
     result = []
     while number > 0:

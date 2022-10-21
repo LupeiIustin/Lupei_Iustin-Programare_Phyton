@@ -13,6 +13,7 @@ def printFibonacciNumbers(n):   #ex 1
         f2 = next
     print()
 
+######################################
 
 def is_prime(n):
     for i in range(2, n):
@@ -20,6 +21,7 @@ def is_prime(n):
           return False
     return True
 
+######################################
 
 def return_prime_numbers(numbers):      #ex2
     result = []
@@ -27,6 +29,8 @@ def return_prime_numbers(numbers):      #ex2
         if is_prime(number):
             result.append(number)
     return result
+
+######################################
 
 def print_operations(group1, group2):    #ex 3
     result = []
@@ -53,6 +57,7 @@ def print_operations(group1, group2):    #ex 3
     print(f"B minuns A is : {result}")
     result.clear()
 
+######################################
 
 def musical_notes(notes,  moves, start):        #ex4       
     result = []
@@ -70,6 +75,7 @@ def musical_notes(notes,  moves, start):        #ex4
 
     return result
 
+######################################
 
 def replace_matrix_elem(matrix):      #ex5
 
@@ -80,8 +86,9 @@ def replace_matrix_elem(matrix):      #ex5
     
     return matrix
 
+######################################
 
-def x_occurences(data, x):
+def x_occurences(data, x):      #ex 6
     result = []
     occ = defaultdict(int)
     for element in data:
@@ -94,6 +101,39 @@ def x_occurences(data, x):
     
     return result
 
+######################################
+
+def is_palindrome(data):               #ex 7
+    data = str(data)
+    if data == data[::-1]:
+        return True
+    return False
+
+def extract_palindrome_info(data):
+    palindromes = []
+    for element in data:
+        if is_palindrome(element) and (element < 0 or element > 9):
+            palindromes.append(element)
+    return (len(palindromes), max(palindromes))
+
+######################################
+
+def check_ascii(data, x=1, flag=True):
+    result = []
+    if flag:
+        for string in data:
+            for character in string:
+                if ord(character) % x == 0:
+                    result.append(character)
+    else:
+        for string in data:
+            for character in string:
+                if ord(character) % x != 0:
+                    result.append(character)
+
+    return result
+
+######################################
 
 if __name__ == "__main__":
     # Driven code
@@ -103,6 +143,8 @@ if __name__ == "__main__":
     print(musical_notes(["do", "re", "mi", "fa", "sol"], [1, -3, 4, 2], 2))
     print(replace_matrix_elem([[0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3]]))
     print(x_occurences([ [1,2,3], [2,3,4],[4,5,6], [4,1, "test"]], 1))
+    print(extract_palindrome_info([121, 2, 2223, 111, 12, 00, 777]))
+    print(check_ascii(["test", "hello", "lab002"], x = 2, flag = False))
 
  # 0 1 2 3 4
  # 

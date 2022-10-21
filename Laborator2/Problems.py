@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 def printFibonacciNumbers(n):   #ex 1
     f1 = 0
     f2 = 1
@@ -51,8 +53,56 @@ def print_operations(group1, group2):    #ex 3
     print(f"B minuns A is : {result}")
     result.clear()
 
+
+def musical_notes(notes,  moves, start):        #ex4       
+    result = []
+
+    index = start
+    result.append(notes[start])
+
+    for move in moves:
+        if index + move > len(notes) - 1 or index + move < 0:
+            index = (index + move) % 5
+        else:
+            index += move
+        print(index)
+        result.append(notes[index])
+
+    return result
+
+
+def replace_matrix_elem(matrix):      #ex5
+
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if j < i:
+                matrix[i][j] = 0
+    
+    return matrix
+
+
+def x_occurences(data, x):
+    result = []
+    occ = defaultdict(int)
+    for element in data:
+        for elem in element:
+            occ[elem] += 1
+    
+    for key in occ:
+        if occ[key] == x:
+            result.append(key)
+    
+    return result
+
+
 if __name__ == "__main__":
     # Driven code
     printFibonacciNumbers(7)
     print(return_prime_numbers([1,2,3,4,5,6,7,8,9,11]), end="\n")
     print_operations([123] , [2])
+    print(musical_notes(["do", "re", "mi", "fa", "sol"], [1, -3, 4, 2], 2))
+    print(replace_matrix_elem([[0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3]]))
+    print(x_occurences([ [1,2,3], [2,3,4],[4,5,6], [4,1, "test"]], 1))
+
+ # 0 1 2 3 4
+ # 

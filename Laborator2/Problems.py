@@ -118,7 +118,7 @@ def extract_palindrome_info(data):
 
 ######################################
 
-def check_ascii(data, x=1, flag=True):
+def check_ascii(data, x=1, flag=True):  #ex 8
     result = []
     if flag:
         for string in data:

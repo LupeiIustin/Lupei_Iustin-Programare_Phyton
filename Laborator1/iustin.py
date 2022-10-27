@@ -108,6 +108,6 @@ if __name__ == "__main__":
     print(upper_camel_case("AnaAreMere"))
     print(is_palindrome(10013))
     print(common_letter("aabbccc"))
-    print(find_first_number("Eu am 10"))\
+    print(find_first_number("Eu am 10"))
     print(count_bits(24))
    

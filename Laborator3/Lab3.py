@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+# 1.Write a function that receives as parameters two lists a and b and returns 
+# a list of sets containing: (a intersected with b, a reunited with b, a - b, b - a)
 
 def operations(data_1, data_2):  # ex 1
     result = []
@@ -28,6 +30,9 @@ def operations(data_1, data_2):  # ex 1
 
     return result
 
+# 2. Write a function that receives a string as a parameter and
+#  returns a dictionary in which the keys are the characters in the character string 
+#  and the values are the number of occurrences of that character in the given text.
 
 def count_occurences(data):  # ex2
     counter = defaultdict(int)  #dictionar cu valori default de tip int in cazul key -lor neinitializate
@@ -35,6 +40,9 @@ def count_occurences(data):  # ex2
         counter[element] += 1
     return counter
 
+# 6. Write a function that receives as a parameter a list and returns a tuple (a, b),
+#  representing the number of unique elements in the list, and b representing the number 
+#  of duplicate elements in the list (use sets to achieve this objective).
 
 def count_unique_and_more(data):  # ex 6
     result = defaultdict(int)
@@ -51,6 +59,24 @@ def count_unique_and_more(data):  # ex 6
 
     return (unique, more)
 
+# 7. Write a function that receives a variable number of sets and returns a dictionary with
+#  the following operations from all sets two by two: reunion, intersection, a-b, b-a.
+#   The key will have the following form: "a op b", where a and b are two sets,
+#    and op is the applied operator: |, &, -. 
+
+# Ex: {1,2}, {2, 3} =>
+
+# {
+
+#     "{1, 2} | {2, 3}":  {1, 2, 3},
+
+#     "{1, 2} & {2, 3}":  { 2 },
+
+#     "{1, 2} - {2, 3}":  { 1 },
+
+#     ...
+
+# }
 
 def get_all_operations(data):  # ex 7
     result = defaultdict(set)
@@ -65,6 +91,15 @@ def get_all_operations(data):  # ex 7
 
     return result
 
+# 8. Write a function that receives a single dict parameter named mapping. 
+# This dictionary always contains a string key "start".
+#  Starting with the value of this key you must obtain a list of objects by iterating 
+#  over mapping in the following way: the value of the current key is the key for the next value,
+#   until you find a loop (a key that was visited before). 
+#   The function must return the list of objects obtained as previously described.
+
+# Ex: loop({'start': 'a', 'b': 'a', 'a': '6', '6': 'z', 'x': '2', 'z': '2', '2': '2', 'y': 'start'})
+#  will return ['a', '6', 'z', '2']
 
 def find_a_loop(data):  # ex 8
     condition = True
@@ -84,11 +119,20 @@ def find_a_loop(data):  # ex 8
 
     return result
 
+# 9. Write a function that receives a variable number of positional arguments and 
+# a variable number of keyword arguments adn will return the number of positional
+#  arguments whose values can be found among keyword arguments values.
+
+# Ex: my_function(1, 2, 3, 4, x=1, y=2, z=3, w=5) will return returna 3
 
 def get_specified_optional_param(param_1, param_2, param_3, param_4, karg_1=1, kaerg_2=2, karg_3=3, karg_4=5):  # ex 9
     # I can t understand
     pass
 
+# 4. The build_xml_element function receives the following parameters: tag, content, 
+# and key-value elements given as name-parameters. Build and return a string that represents the corresponding XML element. 
+#  Example: build_xml_element ("a", "Hello there", href =" http://python.org ", _class =" my-link ", id= " someid ") 
+#  returns  the string = "<a href=\"http://python.org \ "_class = \" my-link \ "id = \" someid \ "> Hello there </a>"
 
 def get_xml_format(tag, content, href="http://python.org", _class=" my-link ", id=" someid "):      #ex 4
     return f"""<{tag} href=\"{href} \ "_class = \" {_class} \ "id = \" {id} \ "> {content} </a>"""  #folosim fdocstring pentru a nu aparea erori de la ""/''

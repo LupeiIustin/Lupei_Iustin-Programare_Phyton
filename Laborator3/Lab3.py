@@ -7,17 +7,17 @@ def operations(data_1, data_2):  # ex 1
     for element in data_1:
         if element in data_2:
             inter.add(element)
-    result.append(inter)
+    result.append(inter)  #daca d1 este in d2 adaugam in i
 
     reunion = set()
-    reunion.update(data_1)
-    reunion.update(data_2)
-    result.append(reunion)
+    reunion.update(data_1) #adauga doar elem din d1
+    reunion.update(data_2) #same
+    result.append(reunion) #adaugam setul in lista
 
     a_b = set()
     for element in data_1:
         if element not in data_2:
-            a_b.add(element)
+            a_b.add(element)#metoda de adaugare la seturi
     result.append(a_b)
 
     b_a = set()
@@ -30,7 +30,7 @@ def operations(data_1, data_2):  # ex 1
 
 
 def count_occurences(data):  # ex2
-    counter = defaultdict(int)
+    counter = defaultdict(int)  #dictionar cu valori default de tip int in cazul key -lor neinitializate
     for element in data:
         counter[element] += 1
     return counter
@@ -58,7 +58,7 @@ def get_all_operations(data):  # ex 7
     for index in range(len(data) - 1):
         for jindex in range(index + 1, len(data)):
             operaration_res = operations(data[index], data[jindex])
-            result[f"{data[index]} & {data[jindex]}"] = operaration_res[0]
+            result[f"{data[index]} & {data[jindex]}"] = operaration_res[0]  #folosim fstring pt ca e mai usor
             result[f"{data[index]} | {data[jindex]}"] = operaration_res[1]
             result[f"{data[index]} - {data[jindex]}"] = operaration_res[2]
             result[f"{data[jindex]} - {data[index]}"] = operaration_res[3]
@@ -72,7 +72,7 @@ def find_a_loop(data):  # ex 8
     next_key = None
     result = []
 
-    while condition:
+    while condition:    # mergem in loop pana cand gasim fie o pereche kay-value egale fie valoarea unei chei e egala cu o alta cheie 
         next_key = data[current_key]
         result.append(data[current_key])
         if current_key == next_key:
@@ -91,7 +91,7 @@ def get_specified_optional_param(param_1, param_2, param_3, param_4, karg_1=1, k
 
 
 def get_xml_format(tag, content, href="http://python.org", _class=" my-link ", id=" someid "):      #ex 4
-    return f"""<{tag} href=\"{href} \ "_class = \" {_class} \ "id = \" {id} \ "> {content} </a>"""
+    return f"""<{tag} href=\"{href} \ "_class = \" {_class} \ "id = \" {id} \ "> {content} </a>"""  #folosim fdocstring pentru a nu aparea erori de la ""/''
 
 
 if __name__ == "__main__":

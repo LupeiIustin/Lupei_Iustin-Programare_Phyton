@@ -67,7 +67,7 @@ def musical_notes(notes,  moves, start):        #ex4
 
     for move in moves:
         if index + move > len(notes) - 1 or index + move < 0:
-            index = (index + move) % 5
+            index = (index + move) % 5 # de ce 5? ar trebui len(moves)
         else:
             index += move
         print(index)

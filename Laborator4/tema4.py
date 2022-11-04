@@ -18,7 +18,7 @@ def extensions(dir):
     return ext
 
 
-# print(extensions(r"C:\Users\Alex\Desktop\Python"))
+ #print(extensions(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton"))
 
 
 """2)	Să se scrie o funcție ce primește ca argumente două căi: director si fișier. 
@@ -38,7 +38,7 @@ def paths(dir, fis):
     except:
         print("Unable to open file")
 
-# paths(r"C:\Users\Alex\Desktop\Python",r"C:\Users\Alex\Desktop\Python\laborator4\ex2.txt")
+# paths(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt")
 
 
 """3)	Să se scrie o funcție ce primește ca parametru un string my_path.
@@ -83,8 +83,8 @@ def path(my_path):
         
 
 
-# print(path(r"C:\Users\Alex\Desktop\Python\laborator4\ex2.txt"))
-# print(path(r"C:\Users\Alex\Desktop\Python"))
+# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt"))
+# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\Python"))
 
 
 """4)	Să se scrie o funcție ce returnează o listă cu extensiile unice a fișierelor din directorul dat ca argument la linia de comandă
@@ -146,8 +146,8 @@ def search(target, to_search):
     return list
 
 
-# print(search(r"C:\Users\Alex\Desktop\Python\laborator3\laborator3.py", "x"))
-# print(search(r"C:\Users\Alex\Desktop\Python\laborator3", "x"))
+# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py", "x"))
+# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4", "x"))
 
 
 """6)	Să se scrie o funcție care are același comportament ca funcția de la exercițiul anterior, cu diferența că primește un parametru
@@ -178,7 +178,7 @@ def dictionary(path):
     return d
 
 
-# print(dictionary(r"C:\Users\Alex\Desktop\Python\laborator3\laborator3.py"))
+# print(dictionary(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py"))
 
 
 """8)	Să se scrie o funcție ce primește un parametru cu numele dir_path. Acest parametru reprezintă calea către un director aflat pe disc.
@@ -200,4 +200,4 @@ def directories(dir_path):
         return list
 
 
-print(directories(r"C:\Users\Alex\Desktop\Python"))
+print(directories(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\Python"))

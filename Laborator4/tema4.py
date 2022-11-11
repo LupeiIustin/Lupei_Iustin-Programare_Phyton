@@ -15,10 +15,9 @@ def extensions(dir):
                     dot_position = i
                     break
             ext.add(base_name[dot_position+1:])
+            ext.sort()
     return ext
 
-
- #print(extensions(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton"))
 
 
 """2)	Să se scrie o funcție ce primește ca argumente două căi: director si fișier. 
@@ -38,7 +37,7 @@ def paths(dir, fis):
     except:
         print("Unable to open file")
 
-# paths(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt")
+
 
 
 """3)	Să se scrie o funcție ce primește ca parametru un string my_path.
@@ -83,8 +82,7 @@ def path(my_path):
         
 
 
-# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt"))
-# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\Python"))
+
 
 
 """4)	Să se scrie o funcție ce returnează o listă cu extensiile unice a fișierelor din directorul dat ca argument la linia de comandă
@@ -108,7 +106,7 @@ def extensions(dir):
     x.sort()
     return x
 
-# print(extensions(sys.argv[1]))
+
 
 
 """5)	Să se scrie o funcție care primește ca argumente două șiruri de caractere, target și to_search șireturneaza o listă de fișiere
@@ -146,8 +144,7 @@ def search(target, to_search):
     return list
 
 
-# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py", "x"))
-# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4", "x"))
+
 
 
 """6)	Să se scrie o funcție care are același comportament ca funcția de la exercițiul anterior, cu diferența că primește un parametru
@@ -176,9 +173,8 @@ def dictionary(path):
     else:
         d["can_write"] = False
     return d
-
-
-# print(dictionary(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py"))
+    
+    
 
 
 """8)	Să se scrie o funcție ce primește un parametru cu numele dir_path. Acest parametru reprezintă calea către un director aflat pe disc.
@@ -198,6 +194,19 @@ def directories(dir_path):
         print("not a directory")
     finally:
         return list
+ 
+# print(extensions(r"C:/Users/User\Desktop/Lupei_Iustin-Programare_Phyton/Laborator4"))  #1
 
+# paths(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt")  #2
 
-print(directories(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\Python"))
+# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\ex2.txt")) #3
+# print(path(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4"))
+
+# print(extensions(sys.argv[1])) #4
+
+# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py", "x")) #5
+# print(search(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4", "x"))
+
+# print(dictionary(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4\tema4.py")) #7
+
+# print(directories(r"C:\Users\User\Desktop\Lupei_Iustin-Programare_Phyton\Laborator4")) #8

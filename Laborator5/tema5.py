@@ -1,4 +1,5 @@
 
+
 # 2) Create a function and an anonymous function that receive a variable number of arguments. Both will return the sum
 #  of the values of the keyword arguments.
 

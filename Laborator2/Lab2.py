@@ -67,7 +67,7 @@ def musical_notes(notes,  moves, start):        #ex4
 
     for move in moves:
         if index + move > len(notes) - 1 or index + move < 0:
-            index = (index + move) % 5 # de ce 5? ar trebui len(moves)
+            index = (index + move) % 5 #pentru a nu depasi lungimea listei cand pasul e mai mare
         else:
             index += move
         print(index)
@@ -122,8 +122,8 @@ def check_ascii(data, x=1, flag=True):  #ex 8
     result = []
     if flag:
         for string in data:
-            for character in string:
-                if ord(character) % x == 0:
+            for character in string: #iteram caracterele unui cuvant
+                if ord(character) % x == 0:   
                     result.append(character)
     else:
         for string in data:

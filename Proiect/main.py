@@ -100,6 +100,28 @@ class Board:
 
     def isempty(self):
         return self.marked_sqrs == 0
+
+class AI:
+
+    def __init__(self, level=1, player=2):
+        self.level = level
+        self.player = player
+
+    # --- RANDOM ---
+
+    def rnd(self, board):
+        empty_sqrs = board.get_empty_sqrs()
+        idx = random.randrange(0, len(empty_sqrs))
+
+        return empty_sqrs[idx]  # (row, col)
+
+    def eval(self, main_board, random):
+        if self.level == 0:
+            # random choice
+            eval = 'random'
+            move = self.rnd(main_board)
+        return move  # row, col
+
 class Game:
 
     def __init__(self):
@@ -144,7 +166,6 @@ class Game:
 
 def main():
     # --- OBJECTS ---
-
     game = Game()
     board = game.board
 

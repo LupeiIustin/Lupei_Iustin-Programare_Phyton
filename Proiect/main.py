@@ -227,29 +227,106 @@ class Game:
             center = (col * SQSIZE + SQSIZE // 2, row * SQSIZE + SQSIZE // 2)
             pygame.draw.circle(screen, CIRC_COLOR, center, RADIUS, CIRC_WIDTH)
 
+def button(screen, position, text):
+    font = pygame.font.SysFont("Arial", 50)
+    text_render = font.render(text, 1, (255, 0, 0))
+    x, y, w, h = text_render.get_rect()
+    x, y = position
+    pygame.draw.line(screen, (150, 150, 150), (x, y), (x + w, y), 5)
+    pygame.draw.line(screen, (150, 150, 150), (x, y - 2), (x, y + h), 5)
+    pygame.draw.line(screen, (50, 50, 50), (x, y + h), (x + w, y + h), 5)
+    pygame.draw.line(screen, (50, 50, 50), (x + w, y + h), [x + w, y], 5)
+    pygame.draw.rect(screen, (100, 100, 100), (x, y, w, h))
+    return screen.blit(text_render, (x, y))
 
 def main():
     # --- OBJECTS ---
+
     game = Game()
     board = game.board
+    ai = game.ai
 
     # --- MAINLOOP ---
 
+
     while True:
+        b1 = button(screen, (920, 5), "Quit")
+        b2 = button(screen, (601, 5), "Reset")
+        b3 = button(screen, (750, 10), "pvp")
+        b4 = button(screen, (750, 90), "pvc")
+        b5 = button(screen, (600, 140), "Easy")
+        b6 = button(screen, (600, 220), "Medium")
+        b7 = button(screen, (600, 300), "Hard")
+
         # pygame events
         for event in pygame.event.get():
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if b1.collidepoint(pygame.mouse.get_pos()):
+                    pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if b2.collidepoint(pygame.mouse.get_pos()):
+                    game.reset()
+                    board = game.board
+                    ai = game.ai
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if b4.collidepoint(pygame.mouse.get_pos()):
+                    game.reset()
+                    board = game.board
+                    ai = game.ai
+                    game.gamemode = 'ai'
+                    print("game mode changed PvC")
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if b3.collidepoint(pygame.mouse.get_pos()):
+                    game.reset()
+                    board = game.board
+                    ai = game.ai
+                    game.gamemode = 'pvp'
+                    print("game mode changed to PvP")
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if b5.collidepoint(pygame.mouse.get_pos()):
+                    ai.level = 0
+                if b6.collidepoint(pygame.mouse.get_pos()):
+                    ai.level = 2
+                if b7.collidepoint(pygame.mouse.get_pos()):
+                    ai.level = 1
+            # quit event
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+
             # click event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = event.pos
                 row = pos[1] // SQSIZE
                 col = pos[0] // SQSIZE
 
-                #  mark sqr
+                # mark sqr
                 if board.empty_sqr(row, col) and game.running:
                     game.make_move(row, col)
 
                     if game.isover():
                         game.running = False
         pygame.display.update()
+
+        # AI initial call
+
+        if game.gamemode == 'ai' and game.player == ai.player and game.running:
+            if ai.level == 2:
+                random = random % 2 + 1
+
+                # update the screen
+            pygame.display.update()
+
+            # eval
+            row, col = ai.eval(board, random=random)
+            game.make_move(row, col)
+
+            if game.isover():
+                game.running = False
+
 
 main()

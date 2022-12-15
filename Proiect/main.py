@@ -6,11 +6,10 @@ import numpy as np
 
 from const import *
 
-
 # --- PYGAME SETUP ---
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 600))    # dimensiunea ferestrei de joc (latime si inaltime)
+screen = pygame.display.set_mode((1000, 600))   # dimensiunea ferestrei de joc (latime si inaltime)
 pygame.display.set_caption('TIC TAC TOE AI')
 myfont = pygame.font.SysFont("Times New Roman", 30)
 black = (0, 0, 0)
@@ -24,8 +23,7 @@ class Board:
     def __init__(self):
         self.squares = np.zeros((ROWS, COLS))    #salvam progresul jocului intr o matricesi asignam 0 ca start
         self.empty_sqrs = self.squares  # [squares]1
-        self.marked_sqrs = 0 #in #
-        # vericam daca avem 3 de x/0 pe verticala/orizontala/diagonale
+        self.marked_sqrs = 0
 
     # verificam daca a castigat unul din playeri
     def final_state(self, show=False):
@@ -34,15 +32,15 @@ class Board:
             @return 1 if player 1 wins
             @return 2 if player 2 wins
         '''
-
+        # vericam daca avem 3 de x/0 pe verticala/orizontala/diagonale
         # vertical wins
         for col in range(COLS):
-            if self.squares[0][col] == self.squares[1][col] == self.squares[2][col] != 0: #daca gasim 3 piese de acelasi fel
+            if self.squares[0][col] == self.squares[1][col] == self.squares[2][col] != 0:   #daca gasim 3 piese de acelasi fel
                 if show:
-                    color = CIRC_COLOR if self.squares[0][col] == 2 else CROSS_COLOR
-                    iPos = (col * SQSIZE + SQSIZE // 2, 20) # formula pentru aflarea pct de start al liniei
-                    fPos = (col * SQSIZE + SQSIZE // 2, HEIGHT - 20) # final
-                    pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH) #desenam o linie pt a marca win
+                    color = CIRC_COLOR if self.squares[0][col] == 2 else CROSS_COLOR     # formula pentru aflarea pct de start al liniei
+                    iPos = (col * SQSIZE + SQSIZE // 2, 20)  # final
+                    fPos = (col * SQSIZE + SQSIZE // 2, HEIGHT - 20)
+                    pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)  #desenam o linie pt a marca win
                 return self.squares[0][col]
 
         # horizontal wins
@@ -76,8 +74,7 @@ class Board:
         # no win yet
         return 0
 
-        # asignam coloanei si liniei playerul dupa apasare
-
+    # asignam coloanei si liniei playerul dupa apasare
     def mark_sqr(self, row, col, player):
         self.squares[row][col] = player
         self.marked_sqrs += 1
@@ -101,6 +98,7 @@ class Board:
     def isempty(self):
         return self.marked_sqrs == 0
 
+
 class AI:
 
     def __init__(self, level=1, player=2):
@@ -115,88 +113,91 @@ class AI:
 
         return empty_sqrs[idx]  # (row, col)
 
-        # --- MINIMAX ---
+    # --- MINIMAX ---
 
-        def minimax(self, board, maximizing):
+    def minimax(self, board, maximizing):
 
-            # terminal case
-            case = board.final_state()
+        # terminal case
+        case = board.final_state()
 
-            # player 1 wins
-            if case == 1:
-                return 1, None  # eval, move
+        # player 1 wins
+        if case == 1:
+            return 1, None  # eval, move
 
-            # player 2 wins
-            if case == 2:
-                return -1, None
+        # player 2 wins
+        if case == 2:
+            return -1, None
 
-            # draw
-            elif board.isfull():
-                return 0, None
+        # draw
+        elif board.isfull():
+            return 0, None
 
-            if maximizing:
-                max_eval = -100
-                best_move = None
-                empty_sqrs = board.get_empty_sqrs()
+        if maximizing:
+            max_eval = -100
+            best_move = None
+            empty_sqrs = board.get_empty_sqrs()
 
-                for (row, col) in empty_sqrs:
-                    temp_board = copy.deepcopy(board)
-                    temp_board.mark_sqr(row, col, 1)
-                    eval = self.minimax(temp_board, False)[0]
-                    if eval > max_eval:
-                        max_eval = eval
-                        best_move = (row, col)
+            for (row, col) in empty_sqrs:
+                temp_board = copy.deepcopy(board)
+                temp_board.mark_sqr(row, col, 1)
+                eval = self.minimax(temp_board, False)[0]
+                if eval > max_eval:
+                    max_eval = eval
+                    best_move = (row, col)
 
-                return max_eval, best_move
+            return max_eval, best_move
 
-            elif not maximizing:
-                min_eval = 100
-                best_move = None
-                empty_sqrs = board.get_empty_sqrs()
+        elif not maximizing:
+            min_eval = 100
+            best_move = None
+            empty_sqrs = board.get_empty_sqrs()
 
-                for (row, col) in empty_sqrs:
-                    temp_board = copy.deepcopy(board)
-                    temp_board.mark_sqr(row, col, self.player)
-                    eval = self.minimax(temp_board, True)[0]
-                    if eval < min_eval:
-                        min_eval = eval
-                        best_move = (row, col)
+            for (row, col) in empty_sqrs:
+                temp_board = copy.deepcopy(board)
+                temp_board.mark_sqr(row, col, self.player)
+                eval = self.minimax(temp_board, True)[0]
+                if eval < min_eval:
+                    min_eval = eval
+                    best_move = (row, col)
 
-                return min_eval, best_move
+            return min_eval, best_move
 
-        # --- MAIN EVAL ---
+    # --- MAIN EVAL ---
 
-        def eval(self, main_board, random):
-            if self.level == 0:
-                # random choice
+    def eval(self, main_board, random):
+        if self.level == 0:
+            # random choice
+            eval = 'random'
+            move = self.rnd(main_board)
+        elif self.level == 1:
+            # minimax algo choice
+            eval, move = self.minimax(main_board, False)
+        elif self.level == 2:
+            # min max and random algo ~ medium dificulty
+            if random % 2 == 0:
                 eval = 'random'
                 move = self.rnd(main_board)
-            elif self.level == 1:
-                # minimax algo choice
+            else:
                 eval, move = self.minimax(main_board, False)
-            elif self.level == 2:
-                # min max and random algo ~ medium dificulty
-                if random % 2 == 0:
-                    eval = 'random'
-                    move = self.rnd(main_board)
-                else:
-                    eval, move = self.minimax(main_board, False)
-                print(self.player)
-            print(move, eval)
+            print(self.player)
+        print(move, eval)
 
-            return move  # row, col
+        return move  # row, col
+
 
 class Game:
 
     def __init__(self):
         self.board = Board()
+        self.ai = AI()
         self.player = 1  # 1-X  #2-0
+        self.gamemode = 'ai'  # pvp or ai
         self.running = True
         self.show_lines()
 
     # --- DRAW METHODS ---
 
-        # desenam liniile orizontale si verticale pentru joc vizual
+    # desenam liniile orizontale si verticale pentru joc vizual
     def show_lines(self):
         # bg
         screen.fill(BG_COLOR)
@@ -227,6 +228,28 @@ class Game:
             center = (col * SQSIZE + SQSIZE // 2, row * SQSIZE + SQSIZE // 2)
             pygame.draw.circle(screen, CIRC_COLOR, center, RADIUS, CIRC_WIDTH)
 
+    # --- OTHER METHODS ---
+
+    def make_move(self, row, col):
+        self.board.mark_sqr(row, col, self.player)
+        self.draw_fig(row, col)
+        self.next_turn()
+
+    def next_turn(self):
+        self.player = self.player % 2 + 1
+
+    def change_gamemodeAI(self):
+        self.gamemode = 'ai'  # if self.gamemode == 'pvp' else 'pvp'
+
+    def change_gamemodeAI(self):
+        self.gamemode = 'pvp'  # if self.gamemode == 'pvp' else 'pvp'
+
+    def isover(self):
+        return self.board.final_state(show=True) != 0 or self.board.isfull()
+
+    def reset(self):
+        self.__init__()
+
 def button(screen, position, text):
     font = pygame.font.SysFont("Arial", 50)
     text_render = font.render(text, 1, (255, 0, 0))
@@ -239,6 +262,7 @@ def button(screen, position, text):
     pygame.draw.rect(screen, (100, 100, 100), (x, y, w, h))
     return screen.blit(text_render, (x, y))
 
+
 def main():
     # --- OBJECTS ---
 
@@ -248,6 +272,10 @@ def main():
 
     # --- MAINLOOP ---
 
+    computer_score = 0
+    player1_score = 0
+    player2_score = 0
+    random = 0
 
     while True:
         b1 = button(screen, (920, 5), "Quit")
@@ -298,6 +326,7 @@ def main():
                 sys.exit()
 
 
+
             # click event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = event.pos
@@ -309,6 +338,10 @@ def main():
                     game.make_move(row, col)
 
                     if game.isover():
+                        if board.final_state() == 1:
+                            player1_score += 1
+                        elif board.final_state() == 2:
+                            player2_score += 1
                         game.running = False
         pygame.display.update()
 
@@ -326,7 +359,14 @@ def main():
             game.make_move(row, col)
 
             if game.isover():
+                if board.final_state() == 1:
+                    player1_score += 1
+                elif board.final_state() == 2:
+                    player2_score += 1
                 game.running = False
 
+        score_display = myfont.render(f"X {player1_score} / O {player2_score}", 2, black)
+        # print(player1_score, player2_score, computer_score)
+        screen.blit(score_display, (700, 350))
 
 main()

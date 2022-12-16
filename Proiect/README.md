@@ -28,3 +28,9 @@ For each of these states add the minimax result of that state to the scores list
 If it's X's turn, return the maximum score from the scores list
 If it's O's turn, return the minimum score from the scores list
 You'll notice that this algorithm is recursive, it flips back and forth between the players until a final score is found.
+
+
+Bibliografy
+
+- https://www.researchgate.net/figure/Game-tree-for-Tic-Tac-Toe-game-using-MiniMax-algorithm_fig1_262672371
+- https://www.neverstopbuilding.com/blog/minimax

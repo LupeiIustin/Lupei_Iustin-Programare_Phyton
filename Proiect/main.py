@@ -275,6 +275,7 @@ def main():
     player1_score = 0
     player2_score = 0
     random = 0
+    previous_rect = None
 
     while True:
         b1 = button(screen, (920, 5), "Quit")
@@ -364,8 +365,13 @@ def main():
                     player2_score += 1
                 game.running = False
 
-        score_display = myfont.render(f"X {player1_score} / O {player2_score}", 2, black)
+        #score_display = myfont.render(f"X {player1_score} / O {player2_score}", 2, black)
         # print(player1_score, player2_score, computer_score)
-        screen.blit(score_display, (700, 350))
+        #screen.blit(score_display, (700, 350))
+        if previous_rect:
+            screen.fill((255, 255, 255), rect=previous_rect)
+        score_display = myfont.render(f"X {player1_score} / O {player2_score}", 2, black)
+        previous_rect = score_display.get_rect(topleft=(750, 350))
+        screen.blit(score_display, (750, 350))
 
 main()

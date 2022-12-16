@@ -15,7 +15,6 @@ myfont = pygame.font.SysFont("Times New Roman", 30)
 black = (0, 0, 0)
 screen.fill(BG_COLOR)
 
-
 # --- CLASSES ---
 
 class Board:
@@ -99,13 +98,13 @@ class Board:
         return self.marked_sqrs == 0
 
 
-class AI:
+class AI_Decision:
 
     def __init__(self, level=1, player=2):
-        self.level = level
+        self.lvl = level
         self.player = player
 
-    # --- RANDOM ---
+     # AI va alege urmatoarea mutare randmo
 
     def rnd(self, board):
         empty_sqrs = board.get_empty_sqrs()
@@ -113,11 +112,11 @@ class AI:
 
         return empty_sqrs[idx]  # (row, col)
 
-    # --- MINIMAX ---
+    # AI va alege uramtoare mutare cu ajutorul algoritmului AI
 
-    def minimax(self, board, maximizing):
+    def mini_max(self, board, maximizing):
 
-        # terminal case
+        #
         case = board.final_state()
 
         # player 1 wins
@@ -140,7 +139,7 @@ class AI:
             for (row, col) in empty_sqrs:
                 temp_board = copy.deepcopy(board)
                 temp_board.mark_sqr(row, col, 1)
-                eval = self.minimax(temp_board, False)[0]
+                eval = self.mini_max(temp_board, False)[0]
                 if eval > max_eval:
                     max_eval = eval
                     best_move = (row, col)
@@ -155,30 +154,30 @@ class AI:
             for (row, col) in empty_sqrs:
                 temp_board = copy.deepcopy(board)
                 temp_board.mark_sqr(row, col, self.player)
-                eval = self.minimax(temp_board, True)[0]
+                eval = self.mini_max(temp_board, True)[0]
                 if eval < min_eval:
                     min_eval = eval
                     best_move = (row, col)
 
             return min_eval, best_move
 
-    # --- MAIN EVAL ---
+    # Selectam modul de joc si modul o data random o data minmax
 
-    def eval(self, main_board, random):
-        if self.level == 0:
+    def ai_lvl_difficulty(self, main_board, random):
+        if self.lvl == 0:
             # random choice
             eval = 'random'
             move = self.rnd(main_board)
-        elif self.level == 1:
+        elif self.lvl == 1:
             # minimax algo choice
-            eval, move = self.minimax(main_board, False)
-        elif self.level == 2:
+            eval, move = self.mini_max(main_board, False)
+        elif self.lvl == 2:
             # min max and random algo ~ medium dificulty
             if random % 2 == 0:
                 eval = 'random'
                 move = self.rnd(main_board)
             else:
-                eval, move = self.minimax(main_board, False)
+                eval, move = self.mini_max(main_board, False)
             print(self.player)
         print(move, eval)
 
@@ -189,7 +188,7 @@ class Game:
 
     def __init__(self):
         self.board = Board()
-        self.ai = AI()
+        self.ai = AI_Decision()
         self.player = 1  # 1-X  #2-0
         self.gamemode = 'ai'  # pvp or ai
         self.running = True
@@ -315,11 +314,11 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if b5.collidepoint(pygame.mouse.get_pos()):
-                    ai.level = 0
+                    ai.lvl = 0
                 if b6.collidepoint(pygame.mouse.get_pos()):
-                    ai.level = 2
+                    ai.lvl = 2
                 if b7.collidepoint(pygame.mouse.get_pos()):
-                    ai.level = 1
+                    ai.lvl = 1
             # quit event
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -348,14 +347,14 @@ def main():
         # AI initial call
 
         if game.gamemode == 'ai' and game.player == ai.player and game.running:
-            if ai.level == 2:
+            if ai.lvl == 2:
                 random = random % 2 + 1
 
                 # update the screen
             pygame.display.update()
 
             # eval
-            row, col = ai.eval(board, random=random)
+            row, col = ai.ai_lvl_difficulty(board, random=random)
             game.make_move(row, col)
 
             if game.isover():

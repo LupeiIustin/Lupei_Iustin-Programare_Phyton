@@ -11,6 +11,7 @@ from const import *
 pygame.init()
 screen = pygame.display.set_mode((1000, 600))   # dimensiunea ferestrei de joc (latime si inaltime)
 pygame.display.set_caption('TIC TAC TOE AI')
+
 myfont = pygame.font.SysFont("Times New Roman", 30)
 black = (0, 0, 0)
 screen.fill(BG_COLOR)
@@ -20,67 +21,65 @@ screen.fill(BG_COLOR)
 class Board:
     # initializam tabla de joc
     def __init__(self):
-        self.squares = np.zeros((ROWS, COLS))    #salvam progresul jocului intr o matricesi asignam 0 ca start
-        self.empty_sqrs = self.squares  # [squares]1
-        self.marked_sqrs = 0
+        self.sqrs = np.zeros((ROWS, COLS))    #salvam progresul jocului intr o matricesi asignam 0 ca start
+        self.empty_squares = self.sqrs  # [squares]1
+        self.assigned_squares = 0
 
     # verificam daca a castigat unul din playeri
-    def final_state(self, show=False):
-        '''
-            @return 0 if there is no win yet
-            @return 1 if player 1 wins
-            @return 2 if player 2 wins
-        '''
+    def stop_game(self, show=False):
+
         # vericam daca avem 3 de x/0 pe verticala/orizontala/diagonale
-        # vertical wins
-        for col in range(COLS):
-            if self.squares[0][col] == self.squares[1][col] == self.squares[2][col] != 0:   #daca gasim 3 piese de acelasi fel
-                if show:
-                    color = CIRC_COLOR if self.squares[0][col] == 2 else CROSS_COLOR     # formula pentru aflarea pct de start al liniei
-                    iPos = (col * SQSIZE + SQSIZE // 2, 20)  # final
-                    fPos = (col * SQSIZE + SQSIZE // 2, HEIGHT - 20)
-                    pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)  #desenam o linie pt a marca win
-                return self.squares[0][col]
 
-        # horizontal wins
+        for columns in range(COLS):
+            if self.sqrs[0][columns] == self.sqrs[1][columns] == self.sqrs[2][columns] != 0:   #daca gasim 3 piese de acelasi fel
+                if show:
+                    color_line = color_X if self.sqrs[0][columns] == 2 else color_0     # formula pentru aflarea pct de start al liniei
+                    initial_p = (columns * square_position + square_position // 2, 20)  # final
+                    final_p = (columns * square_position + square_position // 2, HEIGHT - 20)
+                    if final_p==10:
+                        print("---test---")
+                    pygame.draw.line(screen, color_line, initial_p, final_p, width_win_line)  #desenam o linie pt a marca win
+                return self.sqrs[0][columns]
+
+
         for row in range(ROWS):
-            if self.squares[row][0] == self.squares[row][1] == self.squares[row][2] != 0:
+            if self.sqrs[row][0] == self.sqrs[row][1] == self.sqrs[row][2] != 0:
                 if show:
-                    color = CIRC_COLOR if self.squares[row][0] == 2 else CROSS_COLOR
-                    iPos = (20, row * SQSIZE + SQSIZE // 2)
-                    fPos = (WIDTH - 20, row * SQSIZE + SQSIZE // 2)
-                    pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)
-                return self.squares[row][0]
+                    color_line = color_X if self.sqrs[row][0] == 2 else color_0
+                    initial_p = (20, row * square_position + square_position // 2)
+                    final_p = (WIDTH - 20, row * square_position + square_position // 2)
+                    if final_p==10:
+                        print("---test---")
+                    pygame.draw.line(screen, color_line, initial_p, final_p, width_win_line)
+                return self.sqrs[row][0]
 
-        # desc diagonal
-        if self.squares[0][0] == self.squares[1][1] == self.squares[2][2] != 0:
+
+        if self.sqrs[0][0] == self.sqrs[1][1] == self.sqrs[2][2] != 0:
             if show:
-                color = CIRC_COLOR if self.squares[1][1] == 2 else CROSS_COLOR
-                iPos = (20, 20)
-                fPos = (WIDTH - 20, HEIGHT - 20)
-                pygame.draw.line(screen, color, iPos, fPos, CROSS_WIDTH)
-            return self.squares[1][1]
+                color_line = color_X if self.sqrs[1][1] == 2 else color_0
+                initial_p = (20, 20)
+                final_p = (WIDTH - 20, HEIGHT - 20)
+                if final_p == 10:
+                    print("---test---")
+                pygame.draw.line(screen, color_line, initial_p, final_p, width_X)
+            return self.sqrs[1][1]
 
-        # asc diagonal
-        if self.squares[2][0] == self.squares[1][1] == self.squares[0][2] != 0:
+
+        if self.sqrs[2][0] == self.sqrs[1][1] == self.sqrs[0][2] != 0:
             if show:
-                color = CIRC_COLOR if self.squares[1][1] == 2 else CROSS_COLOR
-                iPos = (20, HEIGHT - 20)
-                fPos = (WIDTH - 20, 20)
-                pygame.draw.line(screen, color, iPos, fPos, CROSS_WIDTH)
-            return self.squares[1][1]
-
-        # no win yet
+                color_line = color_X if self.sqrs[1][1] == 2 else color_0
+                initial_p = (20, HEIGHT - 20)
+                final_p = (WIDTH - 20, 20)
+                if final_p == 10:
+                    print("---test---")
+                pygame.draw.line(screen, color_line, initial_p, final_p, width_X)
+            return self.sqrs[1][1]
         return 0
 
     # asignam coloanei si liniei playerul dupa apasare
     def mark_sqr(self, row, col, player):
-        self.squares[row][col] = player
-        self.marked_sqrs += 1
-
-    def empty_sqr(self, row, col):
-        if row < 3 and col < 3:
-            return self.squares[row][col] == 0
+        self.sqrs[row][col] = player
+        self.assigned_squares += 1
 
     def get_empty_sqrs(self):
         empty_sqrs = []
@@ -91,18 +90,21 @@ class Board:
 
         return empty_sqrs
 
-    def isfull(self):
-        return self.marked_sqrs == 9
+    def empty_sqr(self, row, col):
+        if row < 3 and col < 3:
+            return self.sqrs[row][col] == 0
+    def isfilled(self):
+        return self.assigned_squares == 9
 
-    def isempty(self):
-        return self.marked_sqrs == 0
+    def isunfilled(self):
+        return self.assigned_squares == 0
 
 
 class AI_Decision:
 
-    def __init__(self, level=1, player=2):
-        self.lvl = level
-        self.player = player
+    def __init__(self, lvl=1, person=2):
+        self.lvl = lvl
+        self.player = person
 
      # AI va alege urmatoarea mutare randmo
 
@@ -116,8 +118,8 @@ class AI_Decision:
 
     def mini_max(self, board, maximizing):
 
-        #
-        case = board.final_state()
+
+        case = board.stop_game()
 
         # player 1 wins
         if case == 1:
@@ -128,7 +130,7 @@ class AI_Decision:
             return -1, None
 
         # draw
-        elif board.isfull():
+        elif board.isfilled():
             return 0, None
 
         if maximizing:
@@ -198,43 +200,41 @@ class Game:
 
     # desenam liniile orizontale si verticale pentru joc vizual
     def show_lines(self):
-        # bg
+
         screen.fill(BG_COLOR)
 
-        # vertical
-        pygame.draw.line(screen, LINE_COLOR, (SQSIZE, 0), (SQSIZE, HEIGHT), LINE_WIDTH)
-        pygame.draw.line(screen, LINE_COLOR, (WIDTH - SQSIZE, 0), (WIDTH - SQSIZE, HEIGHT), LINE_WIDTH)
+        pygame.draw.line(screen, color_win_line, (square_position, 0), (square_position, HEIGHT), width_win_line)
+        pygame.draw.line(screen, color_win_line, (WIDTH - square_position, 0), (WIDTH - square_position, HEIGHT), width_win_line)
 
-        # horizontal
-        pygame.draw.line(screen, LINE_COLOR, (0, SQSIZE), (WIDTH, SQSIZE), LINE_WIDTH)
-        pygame.draw.line(screen, LINE_COLOR, (0, HEIGHT - SQSIZE), (WIDTH, HEIGHT - SQSIZE), LINE_WIDTH)
+        pygame.draw.line(screen, color_win_line, (0, square_position), (WIDTH, square_position), width_win_line)
+        pygame.draw.line(screen, color_win_line, (0, HEIGHT - square_position), (WIDTH, HEIGHT - square_position), width_win_line)
 
         # desenam piesele de joc
-    def draw_fig(self, row, col):
+    def draw_piece(self, row, col):
         if self.player == 1:
             # desenam X
-            # desc line
-            start_desc = (col * SQSIZE + OFFSET, row * SQSIZE + OFFSET)
-            end_desc = (col * SQSIZE + SQSIZE - OFFSET, row * SQSIZE + SQSIZE - OFFSET)
-            pygame.draw.line(screen, CROSS_COLOR, start_desc, end_desc, CROSS_WIDTH)
-            # asc line
-            start_asc = (col * SQSIZE + OFFSET, row * SQSIZE + SQSIZE - OFFSET)
-            end_asc = (col * SQSIZE + SQSIZE - OFFSET, row * SQSIZE + OFFSET)
-            pygame.draw.line(screen, CROSS_COLOR, start_asc, end_asc, CROSS_WIDTH)
+            # linia diagonalei principale
+            desc = (col * square_position + OFFSET, row * square_position + OFFSET)
+            final_desc = (col * square_position + square_position - OFFSET, row * square_position + square_position - OFFSET)
+            pygame.draw.line(screen, color_0, desc, final_desc, width_X)
+            #lini diagonalei secundare
+            asc = (col * square_position + OFFSET, row * square_position + square_position - OFFSET)
+            final_asc = (col * square_position + square_position - OFFSET, row * square_position + OFFSET)
+            pygame.draw.line(screen, color_0, asc, final_asc, width_X)
 
         elif self.player == 2:
             # desenam 0
-            center = (col * SQSIZE + SQSIZE // 2, row * SQSIZE + SQSIZE // 2)
-            pygame.draw.circle(screen, CIRC_COLOR, center, RADIUS, CIRC_WIDTH)
+            center = (col * square_position + square_position // 2, row * square_position + square_position // 2)
+            pygame.draw.circle(screen, color_X, center, RADIUS, width_0)
 
     # --- OTHER METHODS ---
 
-    def make_move(self, row, col):
+    def next_move(self, row, col):
         self.board.mark_sqr(row, col, self.player)
-        self.draw_fig(row, col)
-        self.next_turn()
+        self.draw_piece(row, col)
+        self.next_player()
 
-    def next_turn(self):
+    def next_player(self):
         self.player = self.player % 2 + 1
 
     def change_gamemodeAI(self):
@@ -244,7 +244,7 @@ class Game:
         self.gamemode = 'pvp'  # if self.gamemode == 'pvp' else 'pvp'
 
     def isover(self):
-        return self.board.final_state(show=True) != 0 or self.board.isfull()
+        return self.board.stop_game(show=True) != 0 or self.board.isfilled()
 
     def reset(self):
         self.__init__()
@@ -329,17 +329,17 @@ def main():
             # click event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = event.pos
-                row = pos[1] // SQSIZE
-                col = pos[0] // SQSIZE
+                row = pos[1] // square_position
+                col = pos[0] // square_position
 
                 # mark sqr
                 if board.empty_sqr(row, col) and game.running:
-                    game.make_move(row, col)
+                    game.next_move(row, col)
 
                     if game.isover():
-                        if board.final_state() == 1:
+                        if board.stop_game() == 1:
                             player1_score += 1
-                        elif board.final_state() == 2:
+                        elif board.stop_game() == 2:
                             player2_score += 1
                         game.running = False
         pygame.display.update()
@@ -355,12 +355,12 @@ def main():
 
             # eval
             row, col = ai.ai_lvl_difficulty(board, random=random)
-            game.make_move(row, col)
+            game.next_move(row, col)
 
             if game.isover():
-                if board.final_state() == 1:
+                if board.stop_game() == 1:
                     player1_score += 1
-                elif board.final_state() == 2:
+                elif board.stop_game() == 2:
                     player2_score += 1
                 game.running = False
 
